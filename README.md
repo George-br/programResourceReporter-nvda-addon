@@ -1,26 +1,19 @@
-# RAM Usage Reporter
+# Program Resource Reporter
+
+What started as a simple RAM usage reporter is now back with both RAM and CPU monitoring capabilities. Check your program's resource usage with simple keyboard shortcuts.
 
 ## Features
-- Press NVDA+Shift+9 to hear the physical RAM usage of your currently focused program
-- Provides accurate memory information using Windows task manager metrics
-- Simple and efficient reporting
-
-## Usage
-1. Focus on any program window
-2. Press NVDA+Shift+9
-3. NVDA will announce the program name and its current RAM usage
+- NVDA+Shift+9: Announces CPU usage of your currently focused program
+- NVDA+Shift+0: Announces RAM usage of your currently focused program
 
 ## Requirements
-- NVDA 2019.3 or later
-- Windows 7 or later
+NVDA 2019.3 or later
 
-## Installation
-1. Download the addon package
-2. Open it with NVDA
-3. Follow the installation prompts
-4. Restart NVDA when asked
+## Changes
+### 2.0.0
+- Now monitors CPU usage alongside RAM
+- Commands are now under their own category "Program Resource Usage" in Input Gestures
+- Keyboard commands: CPU (NVDA+Shift+9), RAM (NVDA+Shift+0)
 
-## Version History
 ### 1.0.0
-- Initial release
-- Physical RAM usage reporting
+- First release: RAM usage reporting
