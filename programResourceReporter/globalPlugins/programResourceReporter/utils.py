@@ -104,3 +104,27 @@ def format_cpu_cores(per_core_usage: List[float]) -> str:
     """Format CPU usage per core as string."""
     return ", ".join(f"Core {i}: {usage:.1f}%" 
                     for i, usage in enumerate(per_core_usage, 1))
+
+def calculate_average_cpu(per_core_usage: List[float]) -> float:
+    """Calculate average CPU usage as percentage of total system capacity.
+    
+    Args:
+        per_core_usage: List of CPU usage percentages per core
+        
+    Returns:
+        Average CPU usage as a percentage (0-100%)
+    """
+    if not per_core_usage:
+        return 0.0
+    
+    # Get the total CPU usage across all cores
+    total_usage = sum(per_core_usage)
+    
+    # Calculate average as percentage of total system capacity
+    # (sum of all core usage divided by number of cores)
+    total_cores = len(per_core_usage)
+    total_capacity = total_cores * 100.0
+    
+    # Calculate as percentage of total system capacity
+    # and ensure it never exceeds 100%
+    return min(100.0, (total_usage / total_capacity) * 100.0)

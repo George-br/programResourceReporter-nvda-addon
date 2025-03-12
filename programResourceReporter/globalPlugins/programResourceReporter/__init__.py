@@ -1,6 +1,6 @@
 """Program Resource Reporter addon for NVDA.
 Provides detailed CPU and RAM usage information for focused applications.
-Version: 2.0
+Version: 2.1
 """
 
 import globalPluginHandler
@@ -18,7 +18,8 @@ from .utils import (
     format_cpu_cores, 
     get_process_cpu_per_core,
     is_valid_process,
-    metrics
+    metrics,
+    calculate_average_cpu
 )
 from .constants import (
     ERROR_NO_PROCESS,
@@ -127,6 +128,52 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
                     message = _("{}, CPU Usage: {}").format(
                         program_name,
                         format_cpu_cores(all_cores_usage)
+                    )
+                    ui.message(message)
+                else:
+                    ui.message(ERROR_PROCESS_ENDED)
+                
+            except psutil.AccessDenied:
+                ui.message(ERROR_ACCESS_DENIED)
+            except Exception:
+                ui.message(ERROR_GENERAL)
+                
+    @script(
+        description=_("Reports average CPU usage for the current program"),
+        # No gesture assigned by default so users can customize
+        category=SCRCAT_RESOURCE_USAGE
+    )
+    def script_announceProgramAverageCPUUsage(self, gesture):
+        """Report current program's average CPU usage across all cores."""
+        with self._script_lock:
+            try:
+                program_name, process = get_focused_process()
+                if not program_name:
+                    ui.message(ERROR_NO_PROCESS)
+                    return
+                
+                processes = self.get_all_processes()
+                if not processes:
+                    ui.message(ERROR_NO_PROCESS)
+                    return
+                
+                all_cores_usage = []
+                for p in processes:
+                    per_core = get_process_cpu_per_core(p)
+                    if all_cores_usage:
+                        while len(all_cores_usage) < len(per_core):
+                            all_cores_usage.append(0.0)
+                        for i, usage in enumerate(per_core):
+                            if i < len(all_cores_usage):
+                                all_cores_usage[i] = min(100, all_cores_usage[i] + usage)
+                    else:
+                        all_cores_usage = per_core[:]
+                
+                if all_cores_usage:
+                    avg_cpu = calculate_average_cpu(all_cores_usage)
+                    message = _("{}, Average CPU Usage: {:.1f}%").format(
+                        program_name,
+                        avg_cpu
                     )
                     ui.message(message)
                 else:
