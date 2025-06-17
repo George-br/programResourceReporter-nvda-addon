@@ -1,6 +1,11 @@
+# Program Resource Reporter addon for NVDA
+# Copyright (C) 2024-2025
+# This file is covered by the GNU General Public License.
+# See the file LICENSE for more details.
+
 import time
 import threading
-from typing import Optional, Dict, List
+from typing import Dict, List
 import psutil
 from .constants import CACHE_CLEANUP_INTERVAL
 from .utils import is_valid_process, metrics
@@ -13,26 +18,6 @@ class ProcessCache:
         self._lock = threading.Lock()
         self._last_cleanup = time.time()
 
-    def get(self, pid: int) -> Optional[psutil.Process]:
-        """Get a process from cache or create new one."""
-        with self._lock:
-            self._cleanup()
-            
-            # Return cached process if valid
-            if pid in self._cache and is_valid_process(self._cache[pid]):
-                return self._cache[pid]
-            
-            # Try to create new process
-            try:
-                process = psutil.Process(pid)
-                if is_valid_process(process):
-                    self._cache[pid] = process
-                    return process
-                return None
-            except Exception:
-                self._remove_process(pid)
-                return None
-
     def get_child_processes(self, parent_process: psutil.Process) -> List[psutil.Process]:
         """Get all child processes for a given parent process."""
         if not is_valid_process(parent_process):
@@ -44,6 +29,8 @@ class ProcessCache:
                 children = parent_process.children(recursive=True)
                 
             with self._lock:
+                self._cleanup()  # Perform periodic cleanup
+                
                 for child in children:
                     try:
                         if is_valid_process(child):

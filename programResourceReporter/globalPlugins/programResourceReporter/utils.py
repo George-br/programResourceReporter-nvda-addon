@@ -1,3 +1,8 @@
+# Program Resource Reporter addon for NVDA
+# Copyright (C) 2024-2025
+# This file is covered by the GNU General Public License.
+# See the file LICENSE for more details.
+
 import time
 import threading
 from typing import Optional, Tuple, List
@@ -17,7 +22,18 @@ class ProcessMetrics:
         self._lock = threading.Lock()
 
     def get_cpu_usage(self, process: psutil.Process) -> List[float]:
-        """Get CPU usage per core."""
+        """Get CPU usage per core for a process.
+        
+        Args:
+            process: psutil.Process instance
+            
+        Returns:
+            List of CPU usage percentages per core
+            
+        Raises:
+            psutil.AccessDenied: If access to process is denied
+            psutil.NoSuchProcess: If process no longer exists
+        """
         with self._lock:
             current_time = time.time()
             total_cores = psutil.cpu_count(logical=True) or 1
@@ -30,7 +46,7 @@ class ProcessMetrics:
 
             try:
                 if not is_valid_process(process):
-                    return [0.0] * total_cores
+                    raise psutil.NoSuchProcess(pid)
 
                 self._last_cpu_check[pid] = current_time
                 with process.oneshot():
@@ -52,7 +68,11 @@ class ProcessMetrics:
                 
                 return core_usage
                 
+            except (psutil.AccessDenied, psutil.NoSuchProcess):
+                # Re-raise specific psutil exceptions for proper handling upstream
+                raise
             except Exception:
+                # For any other exception, return zeros
                 return [0.0] * total_cores
 
     def cleanup(self, pid: int):
@@ -97,7 +117,20 @@ def get_focused_process() -> Tuple[Optional[str], Optional[psutil.Process]]:
         return None, None
 
 def get_process_cpu_per_core(process: psutil.Process) -> List[float]:
-    """Get CPU usage per core."""
+    """Get CPU usage per core for a process.
+    
+    Args:
+        process: psutil.Process instance
+        
+    Returns:
+        List of CPU usage percentages per core
+        
+    Raises:
+        psutil.AccessDenied: If access to process is denied
+        psutil.NoSuchProcess: If process no longer exists
+    """
+    if not is_valid_process(process):
+        raise psutil.NoSuchProcess(process.pid)
     return metrics.get_cpu_usage(process)
 
 def format_cpu_cores(per_core_usage: List[float]) -> str:
@@ -106,7 +139,7 @@ def format_cpu_cores(per_core_usage: List[float]) -> str:
                     for i, usage in enumerate(per_core_usage, 1))
 
 def calculate_average_cpu(per_core_usage: List[float]) -> float:
-    """Calculate average CPU usage as percentage of total system capacity.
+    """Calculate average CPU usage across all cores.
     
     Args:
         per_core_usage: List of CPU usage percentages per core
@@ -117,14 +150,5 @@ def calculate_average_cpu(per_core_usage: List[float]) -> float:
     if not per_core_usage:
         return 0.0
     
-    # Get the total CPU usage across all cores
-    total_usage = sum(per_core_usage)
-    
-    # Calculate average as percentage of total system capacity
-    # (sum of all core usage divided by number of cores)
-    total_cores = len(per_core_usage)
-    total_capacity = total_cores * 100.0
-    
-    # Calculate as percentage of total system capacity
-    # and ensure it never exceeds 100%
-    return min(100.0, (total_usage / total_capacity) * 100.0)
+    # Simple average of all core usage percentages
+    return sum(per_core_usage) / len(per_core_usage)
