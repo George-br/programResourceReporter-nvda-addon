@@ -1,0 +1,62 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: ProgramResourceReporter\n"
+"POT-Creation-Date: 2025-06-19 22:10+0300\n"
+"PO-Revision-Date: 2025-06-20 21:49+0800\n"
+"Last-Translator: Alan <alanzhangmw@outlook.com>\n"
+"Language-Team: nvdacn.com\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 3.6\n"
+"X-Poedit-Basepath: ../../../globalPlugins\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: programResourceReporter/__init__.py:54
+msgid "Program Resource Usage"
+msgstr "程序资源使用情况"
+
+#: programResourceReporter/__init__.py:133
+msgid "{} is using {} of physical ram"
+msgstr "{} 已使用 {} 物理内存"
+
+#: programResourceReporter/__init__.py:168
+msgid "{}, CPU Usage: {}"
+msgstr "{}, CPU使用率：{}"
+
+#: programResourceReporter/__init__.py:179
+msgid "{}, Average CPU Usage: {:.1f}%"
+msgstr "{}, 平均CPU使用率：{:.1f}%"
+
+#: programResourceReporter/__init__.py:186
+msgid "Reports physical RAM usage of the current program"
+msgstr "报告当前程序的物理内存使用情况"
+
+#: programResourceReporter/__init__.py:196
+msgid "Reports CPU usage per core for the current program"
+msgstr "报告当前程序CPU每个核心的使用情况"
+
+#: programResourceReporter/__init__.py:206
+msgid "Reports average CPU usage for the current program"
+msgstr "报告当前程序的平均CPU使用率"
+
+#: programResourceReporter/constants.py:21
+msgid "Cannot access program information"
+msgstr "无法访问程序信息"
+
+#: programResourceReporter/constants.py:22
+msgid "Cannot access process (requires administrator privileges)"
+msgstr "无法访问进程（需要管理员权限）"
+
+#: programResourceReporter/constants.py:23
+msgid "Program is no longer running"
+msgstr "程序不再运行"
+
+#: programResourceReporter/constants.py:24
+msgid "Cannot get process information"
+msgstr "无法获取进程信息"
+
