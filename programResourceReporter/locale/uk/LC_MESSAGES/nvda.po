@@ -1,0 +1,42 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2025-07-06 13:09+0300\n"
+"PO-Revision-Date: 2025-07-06 13:18+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: uk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.6\n"
+"X-Poedit-Basepath: globalPlugins\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: programResourceReporter/__init__.py:54
+msgid "Program Resource Usage"
+msgstr "Використання ресурсів програмою"
+
+#: programResourceReporter/__init__.py:133
+msgid "{} is using {} of physical ram"
+msgstr "{} використовує {} фізичної оперативної пам'яті"
+
+#: programResourceReporter/__init__.py:168
+msgid "{}, CPU Usage: {}"
+msgstr "{}, Використання CPU: {}"
+
+#: programResourceReporter/__init__.py:179
+msgid "{}, Average CPU Usage: {:.1f}%"
+msgstr "{}, Середнє використання процесора: {: .1f}%"
+
+#: programResourceReporter/__init__.py:186
+msgid "Reports physical RAM usage of the current program"
+msgstr "Звітує про використання фізичної оперативної пам'яті поточної програми"
+
+#: programResourceReporter/__init__.py:196
+msgid "Reports CPU usage per core for the current program"
+msgstr "Звітує про використання ЦП для кожного ядра для поточної програми"
+
+#: programResourceReporter/__init__.py:206
+msgid "Reports average CPU usage for the current program"
+msgstr "Звітує про середнє використання ЦП для поточної програми"
